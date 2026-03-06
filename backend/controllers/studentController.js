@@ -13,7 +13,7 @@ const getDashboardStats = async (req, res) => {
 
         // 1b. Calculate Dynamic CGPA (Weighted by Credit Hours)
         const [cgpaResult] = await db.query(`
-            SELECT SUM(ah.grade_point * c.credit_hours) / SUM(c.credit_hours) as calculated_cgpa
+            SELECT IFNULL(SUM(ah.grade_point * c.credit_hours) / NULLIF(SUM(c.credit_hours), 0), 0) as calculated_cgpa
             FROM academic_history ah
             JOIN courses c ON ah.course_id = c.course_id
             WHERE ah.student_id = ?

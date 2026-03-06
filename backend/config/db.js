@@ -19,8 +19,9 @@ if (process.env.DB_CA_PATH) {
     try {
         const fs = require('fs');
         const path = require('path');
+        const caPath = path.resolve(process.env.DB_CA_PATH);
         poolConfig.ssl = {
-            ca: fs.readFileSync(path.resolve(process.env.DB_CA_PATH))
+            ca: fs.readFileSync(caPath)
         };
         console.log('📡 Database: SSL Enabled');
     } catch (err) {
@@ -43,7 +44,6 @@ pool.getConnection((err, connection) => {
         }
     }
     if (connection) connection.release();
-    return;
 });
 
 module.exports = pool.promise();

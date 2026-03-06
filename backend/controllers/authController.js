@@ -123,7 +123,7 @@ const registerUser = async (req, res) => {
 
                 await db.query(
                     'INSERT INTO course_registrations (student_id, course_id, full_name, roll_number, status) VALUES (?, ?, ?, ?, ?)',
-                    [studentId, courseId, fullName, rollNumber, 'Approved']
+                    [studentId, courseId, fullName, rollNumber, 'Registered']
                 );
 
                 // Auto-generate fee
