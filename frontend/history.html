@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic History - Nexor University</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#667eea',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300 font-sans">
+    <div class="app-container flex min-h-screen">
+        <!-- Sidebar injected by layout.js -->
+
+        <div class="main-content w-full opacity-0">
+            <!-- Header injected by layout.js -->
+
+            <div
+                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <h3 class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-6 flex items-center">
+                    <i class="fa-solid fa-file-contract mr-2"></i> Academic History
+                </h3>
+                <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr
+                                class="bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-200 uppercase text-xs tracking-wider">
+                                <th class="p-4">Semester</th>
+                                <th class="p-4">Course Code</th>
+                                <th class="p-4">Course Title</th>
+                                <th class="p-4">Credits</th>
+                                <th class="p-4">Grade</th>
+                                <th class="p-4">Grade Point</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-list"
+                            class="text-sm text-gray-700 dark:text-gray-300 divide-y divide-gray-100 dark:divide-gray-700">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/history.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.to(".main-content", { duration: 0.8, opacity: 1 });
+            setTimeout(() => {
+                gsap.from("#history-list tr", { duration: 0.5, x: -20, opacity: 0, stagger: 0.05 });
+            }, 300);
+        });
+    </script>
+</body>
+
+</html>

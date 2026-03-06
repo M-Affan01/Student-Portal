@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Nexor University</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#667eea',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        .swal-form-group {
+            text-align: left;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .swal-label {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #a5a2a2;
+            margin-left: 5px;
+        }
+
+        .swal2-input {
+            color: white !important;
+        }
+
+        /* Premium Hover Effects */
+        .profile-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        .profile-card:hover::before {
+            opacity: 1;
+        }
+
+        .info-block {
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .info-block:hover:not(.cursor-not-allowed) {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .avatar-glow {
+            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .avatar-glow:hover {
+            box-shadow: 0 0 20px 5px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-magnetic {
+            transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300 font-sans">
+    <div class="app-container flex min-h-screen">
+        <!-- Sidebar injected by layout.js -->
+
+        <div class="main-content w-full opacity-0">
+            <!-- Header injected by layout.js -->
+
+            <div class="profile-card bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-gray-700 max-w-4xl mx-auto"
+                data-tilt data-tilt-max="2" data-tilt-speed="400">
+                <h3
+                    class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-8 border-b dark:border-gray-700 pb-4">
+                    <i class="fa-solid fa-id-card mr-3"></i> Student Profile
+                </h3>
+
+                <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+                    <div class="flex-shrink-0 relative group">
+                        <input type="file" id="profile-upload-input" class="hidden" accept="image/*">
+                        <div id="profile-avatar-container"
+                            class="avatar-glow w-32 h-32 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center text-indigo-600 dark:text-indigo-300 mb-4 shadow-inner overflow-hidden relative cursor-pointer group">
+                            <img id="p-img" src="" class="w-full h-full object-cover hidden">
+                            <i id="p-icon" class="fa-solid fa-user fa-5x"></i>
+                            <div
+                                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                                <i class="fa-solid fa-camera"></i>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <span
+                                class="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 text-xs font-bold animate__animated animate__pulse animate__infinite">Active
+                                Student</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-grow w-full">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div
+                                class="info-block bg-gray-50 dark:bg-gray-700 p-4 rounded-xl opacity-80 cursor-not-allowed border-dashed border-gray-300 dark:border-gray-600">
+                                <span
+                                    class="block text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide font-bold mb-1">
+                                    <i class="fa-solid fa-lock mr-1"></i> Full Name</span>
+                                <span id="p-name"
+                                    class="text-lg font-semibold text-gray-500 dark:text-gray-400 text-white">Loading...</span>
+                            </div>
+                            <div
+                                class="info-block bg-gray-50 dark:bg-gray-700 p-4 rounded-xl opacity-80 cursor-not-allowed border-dashed border-gray-300 dark:border-gray-600">
+                                <span
+                                    class="block text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide font-bold mb-1">
+                                    <i class="fa-solid fa-lock mr-1"></i> Roll Number</span>
+                                <span id="p-roll"
+                                    class="text-lg font-semibold text-gray-500 dark:text-gray-400 font-mono text-white">Loading...</span>
+                            </div>
+                            <div
+                                class="info-block bg-gray-50 dark:bg-gray-700 p-4 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition-all border border-transparent">
+                                <span
+                                    class="block text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold mb-1">Email
+                                    Address</span>
+                                <span id="p-email"
+                                    class="text-lg font-semibold text-gray-800 dark:text-white">Loading...</span>
+                            </div>
+                            <div
+                                class="info-block bg-gray-50 dark:bg-gray-700 p-4 rounded-xl opacity-80 cursor-not-allowed border-dashed border-gray-300 dark:border-gray-600">
+                                <span
+                                    class="block text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide font-bold mb-1">
+                                    <i class="fa-solid fa-lock mr-1"></i> Department</span>
+                                <span id="p-dept"
+                                    class="text-lg font-semibold text-gray-500 dark:text-gray-400 text-white">Loading...</span>
+                            </div>
+                            <div
+                                class="info-block bg-gray-50 dark:bg-gray-700 p-4 rounded-xl opacity-80 cursor-not-allowed border-dashed border-gray-300 dark:border-gray-600">
+                                <span
+                                    class="block text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide font-bold mb-1">
+                                    <i class="fa-solid fa-lock mr-1"></i> Batch Year</span>
+                                <span id="p-batch"
+                                    class="text-lg font-semibold text-gray-500 dark:text-gray-400 text-white">2023</span>
+                            </div>
+                            <div
+                                class="info-block bg-gray-50 dark:bg-gray-700 p-4 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition-all border border-transparent">
+                                <span
+                                    class="block text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold mb-1">Phone
+                                    Number</span>
+                                <span id="p-phone"
+                                    class="text-lg font-semibold text-gray-800 dark:text-white">Loading...</span>
+                            </div>
+                            <div
+                                class="info-block bg-gray-50 dark:bg-gray-700 p-4 rounded-xl opacity-80 cursor-not-allowed border-dashed border-gray-300 dark:border-gray-600">
+                                <span
+                                    class="block text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide font-bold mb-1">
+                                    <i class="fa-solid fa-lock mr-1"></i> Current Semester</span>
+                                <span id="p-sem"
+                                    class="text-lg font-semibold text-gray-800 dark:text-white">Loading...</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <div class="my-8 border-t border-gray-100 dark:border-gray-700"></div>
+
+                        <h4 class="text-lg font-bold text-indigo-600 dark:text-indigo-400 mb-6 flex items-center">
+                            <i class="fa-solid fa-building-columns mr-2"></i> Department Details
+                        </h4>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-2">
+                            <div
+                                class="info-block bg-indigo-50/50 dark:bg-indigo-900/20 p-4 rounded-xl border border-indigo-100 dark:border-indigo-800">
+                                <span
+                                    class="block text-xs text-indigo-500 dark:text-indigo-300 uppercase tracking-wide font-bold mb-1">
+                                    Head of Department
+                                </span>
+                                <span id="p-hod"
+                                    class="text-sm font-semibold text-gray-800 dark:text-gray-200">Loading...</span>
+                            </div>
+                            <div
+                                class="info-block bg-indigo-50/50 dark:bg-indigo-900/20 p-4 rounded-xl border border-indigo-100 dark:border-indigo-800">
+                                <span
+                                    class="block text-xs text-indigo-500 dark:text-indigo-300 uppercase tracking-wide font-bold mb-1">
+                                    Location
+                                </span>
+                                <span id="p-building"
+                                    class="text-sm font-semibold text-gray-800 dark:text-gray-200">Loading...</span>
+                            </div>
+                            <div
+                                class="info-block bg-indigo-50/50 dark:bg-indigo-900/20 p-4 rounded-xl border border-indigo-100 dark:border-indigo-800">
+                                <span
+                                    class="block text-xs text-indigo-500 dark:text-indigo-300 uppercase tracking-wide font-bold mb-1">
+                                    Contact Email
+                                </span>
+                                <span id="p-dept-email"
+                                    class="text-sm font-semibold text-gray-800 dark:text-gray-200">Loading...</span>
+                            </div>
+                            <div
+                                class="info-block bg-indigo-50/50 dark:bg-indigo-900/20 p-4 rounded-xl border border-indigo-100 dark:border-indigo-800">
+                                <span
+                                    class="block text-xs text-indigo-500 dark:text-indigo-300 uppercase tracking-wide font-bold mb-1">
+                                    Office Phone
+                                </span>
+                                <span id="p-dept-phone"
+                                    class="text-sm font-semibold text-gray-800 dark:text-gray-200">Loading...</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 flex flex-wrap gap-4">
+                            <button id="edit-profile-btn"
+                                class="btn-magnetic px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full font-bold shadow-lg transform hover:-translate-y-1 transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-user-pen"></i> Edit Profile
+                            </button>
+                            <button id="change-password-btn"
+                                class="btn-magnetic px-6 py-2.5 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-800 dark:text-white rounded-full font-bold shadow-md transform hover:-translate-y-1 transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-key"></i> Change Password
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/profile.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.to(".main-content", { duration: 0.8, opacity: 1 });
+            gsap.from(".profile-card", { duration: 1, y: 50, opacity: 0, ease: "power3.out" });
+
+            // Magnetic Button Effect
+            const magnets = document.querySelectorAll('.btn-magnetic');
+            magnets.forEach((btn) => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+
+                    gsap.to(btn, {
+                        x: x * 0.3,
+                        y: y * 0.3,
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                });
+
+                btn.addEventListener('mouseleave', () => {
+                    gsap.to(btn, {
+                        x: 0,
+                        y: 0,
+                        duration: 0.5,
+                        ease: "elastic.out(1, 0.3)"
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

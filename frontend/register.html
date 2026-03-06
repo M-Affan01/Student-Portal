@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexor University - Student Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        },
+                        dark: '#0f172a',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #030712;
+        }
+
+        .mesh-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 0% 0%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(17, 24, 39, 1) 0%, rgba(3, 7, 18, 1) 100%);
+            z-index: -1;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glow-border-box {
+            position: relative;
+            padding: 2px;
+            border-radius: 2.5rem;
+            background: linear-gradient(90deg, #6366f1, #a855f7, #6366f1);
+            background-size: 200% auto;
+            animation: borderRotate 3s linear infinite;
+        }
+
+        @keyframes borderRotate {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .cursor-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .input-field {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            backdrop-filter: blur(5px);
+        }
+
+        .input-field:focus {
+            background: rgba(0, 0, 0, 0.7);
+            border-color: rgba(99, 102, 241, 0.8);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+            outline: none;
+        }
+
+        .magnetic-btn {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+    </style>
+</head>
+
+<body class="h-screen flex items-center justify-center overflow-hidden relative text-white antialiased">
+
+    <!-- Decorative Elements -->
+    <div class="mesh-gradient"></div>
+    <div id="particles-js" class="absolute inset-0 z-0"></div>
+    <div class="cursor-glow" id="cursor-glow"></div>
+
+    <div class="absolute top-[20%] left-[10%] w-96 h-96 bg-indigo-600/15 blur-[120px] rounded-full animate-pulse"></div>
+    <div
+        class="absolute bottom-[20%] right-[10%] w-96 h-96 bg-purple-600/15 blur-[120px] rounded-full animate-pulse delay-700">
+    </div>
+
+    <div class="glow-border-box tilt-card" data-tilt data-tilt-max="5" data-tilt-speed="1000" data-tilt-glare
+        data-tilt-max-glare="0.2">
+        <div class="relative z-10 w-full max-w-[440px] p-10 rounded-[2.5rem] glass-card main-card">
+
+            <div class="flex flex-col items-center mb-10">
+                <div class="text-center mt-2 group">
+                    <h1
+                        class="text-4xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-white to-purple-400 animate-gradient-x logo-text">
+                        Nexor Registration
+                    </h1>
+                    <p
+                        class="text-indigo-400/60 font-bold uppercase tracking-[0.4em] text-[10px] mt-2 group-hover:tracking-[0.6em] transition-all duration-700">
+                        Join the Elite</p>
+                </div>
+            </div>
+
+            <form id="registerForm" class="space-y-4">
+                <div class="space-y-4">
+                    <div class="relative group input-group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                            <i
+                                class="fa-solid fa-user text-indigo-300 group-focus-within:text-white transition-colors text-lg"></i>
+                        </div>
+                        <input type="text" id="fullName" placeholder="Full Name" required
+                            class="w-full input-field rounded-2xl py-3 pl-12 pr-4 transition-all font-medium text-lg relative z-0">
+                    </div>
+
+                    <div class="relative group input-group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                            <i
+                                class="fa-solid fa-envelope text-indigo-300 group-focus-within:text-white transition-colors text-lg"></i>
+                        </div>
+                        <input type="email" id="email" placeholder="Email Address" required
+                            class="w-full input-field rounded-2xl py-3 pl-12 pr-4 transition-all font-medium text-lg relative z-0">
+                    </div>
+
+                    <div class="relative group input-group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                            <i
+                                class="fa-solid fa-id-card text-indigo-300 group-focus-within:text-white transition-colors text-lg"></i>
+                        </div>
+                        <input type="text" id="rollNumber" placeholder="Roll Number" required
+                            class="w-full input-field rounded-2xl py-3 pl-12 pr-4 transition-all font-medium text-lg relative z-0">
+                    </div>
+
+                    <div class="relative group input-group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                            <i
+                                class="fa-solid fa-lock text-indigo-300 group-focus-within:text-white transition-colors text-lg"></i>
+                        </div>
+                        <input type="password" id="password" placeholder="Password" required
+                            class="w-full input-field rounded-2xl py-3 pl-12 pr-4 transition-all font-medium text-lg relative z-0">
+                    </div>
+                </div>
+
+                <!-- Course Selection Section -->
+                <div class="space-y-2 pt-4 border-t border-white/10">
+                    <label class="block text-sm font-bold text-indigo-300 uppercase tracking-wider mb-2">Select Your
+                        Courses</label>
+                    <div id="course-list-container"
+                        class="space-y-2 max-h-40 overflow-y-auto pr-2 custom-scrollbar text-sm">
+                        <div class="text-center text-gray-500 py-2"><i class="fa-solid fa-spinner fa-spin"></i> Loading
+                            courses...</div>
+                    </div>
+                    <p class="text-[10px] text-gray-400 italic text-right">* Mandatory courses are pre-selected</p>
+                </div>
+
+                <button type="submit"
+                    class="magnetic-btn w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-black tracking-widest shadow-2xl shadow-indigo-500/20 transform active:scale-[0.98] transition-all duration-300 uppercase text-xs flex items-center justify-center gap-2">
+                    <span>Create Account</span>
+                    <i class="fa-solid fa-arrow-right-long text-[10px] opacity-50"></i>
+                </button>
+            </form>
+
+            <div class="mt-8 text-center">
+                <p class="text-xs text-gray-400">Already have an account? <a href="login.html"
+                        class="text-indigo-400 hover:text-white transition-colors font-bold">Sign In</a></p>
+            </div>
+
+            <div
+                class="mt-8 pt-8 border-t border-white/5 flex justify-between items-center text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                <span>v2.0 Elite Edition</span>
+                <span class="text-indigo-500/50">Nexor University &copy; 2025</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Decoration -->
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/5 blur-[150px] rounded-full -mr-64 -mt-64">
+    </div>
+    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/5 blur-[150px] rounded-full -ml-64 -mb-64">
+    </div>
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+
+    <script src="js/auth.js"></script>
+
+    <script>
+        // Cursor Glow Follow
+        const cursorGlow = document.getElementById('cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        // Init Particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 60, density: { enable: true, value_area: 800 } },
+                color: { value: ["#6366f1", "#818cf8", "#a78bfa"] },
+                shape: { type: "circle" },
+                opacity: {
+                    value: 0.3,
+                    random: true,
+                    anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: { enable: true, speed: 2, size_min: 0.1, sync: false }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#6366f1",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: ["grab", "bubble"] },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                },
+                modes: {
+                    grab: { distance: 200, line_linked: { opacity: 0.5 } },
+                    bubble: { distance: 200, size: 6, duration: 0.3, opacity: 1, speed: 3 },
+                    push: { particles_nb: 4 }
+                }
+            },
+            retina_detect: true
+        });
+
+        // GSAP Entrance Sequence
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            tl.from(".main-card", { duration: 1.2, y: 50, ease: "expo.out" })
+                .from(".logo-text", { duration: 0.8, y: -10, stagger: 0.1, ease: "back.out(2)" }, "-=0.6")
+                .from(".input-group", { duration: 0.6, x: -10, opacity: 0, stagger: 0.1, ease: "power2.out" }, "-=0.4")
+                .from(".magnetic-btn", { duration: 0.8, scale: 0.95, ease: "elastic.out(1, 0.5)" }, "-=0.3");
+        });
+
+        // Magnetic Button Logic
+        const btn = document.querySelector('.magnetic-btn');
+        document.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const dist = Math.sqrt(x * x + y * y);
+
+            if (dist < 100) {
+                gsap.to(btn, { duration: 0.3, x: x * 0.3, y: y * 0.3, ease: "power2.out" });
+            } else {
+                gsap.to(btn, { duration: 0.5, x: 0, y: 0, ease: "elastic.out(1, 0.3)" });
+            }
+        });
+    </script>
+</body>
+
+</html>

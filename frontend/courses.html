@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - Nexor University</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#667eea',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animations & Tilt -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300 font-sans">
+    <div class="app-container flex min-h-screen">
+        <!-- Sidebar injected by layout.js -->
+
+        <div class="main-content w-full">
+            <!-- Header injected by layout.js -->
+
+            <!-- Registered Courses - Glass Card -->
+            <div
+                class="relative overflow-hidden rounded-2xl shadow-2xl p-6 mb-8 border border-white/20 bg-white/60 dark:bg-gray-800/50 backdrop-blur-xl transition-all duration-300 hover:shadow-indigo-500/10 hover:border-white/30">
+
+                <!-- Decorative Gradient Blob -->
+                <div
+                    class="absolute -top-10 -right-10 w-40 h-40 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob">
+                </div>
+                <div
+                    class="absolute -bottom-10 -left-10 w-40 h-40 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000">
+                </div>
+
+                <h3
+                    class="relative text-xl font-bold text-gray-800 dark:text-white mb-6 flex flex-wrap items-center justify-between tracking-wide gap-4">
+                    <span
+                        class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+                        <i class="fa-solid fa-layer-group mr-2 text-indigo-500"></i> Selected Courses
+                    </span>
+                    <div
+                        class="flex items-center gap-2 bg-indigo-50 dark:bg-indigo-900/30 px-4 py-2 rounded-xl border border-indigo-100 dark:border-indigo-800">
+                        <i class="fa-solid fa-gauge-high text-indigo-500 text-xs text-sm"></i>
+                        <span
+                            class="text-xs font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-widest">Credit
+                            Load:</span>
+                        <span id="credit-count-badge" class="font-mono font-bold text-indigo-600 dark:text-indigo-400">0
+                            / 21</span>
+                    </div>
+                </h3>
+                <div class="relative overflow-x-auto rounded-xl">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr
+                                class="bg-indigo-50/50 dark:bg-indigo-900/30 text-indigo-900 dark:text-indigo-100 uppercase text-xs tracking-wider border-b border-indigo-100 dark:border-indigo-800">
+                                <th class="p-4 pl-6 font-semibold">Code</th>
+                                <th class="p-4 font-semibold">Course Title</th>
+                                <th class="p-4 font-semibold">Credits</th>
+                                <th class="p-4 font-semibold">Instructor</th>
+                                <th class="p-4 font-semibold">Status</th>
+                                <th class="p-4 font-semibold text-right pr-6">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="my-courses-list"
+                            class="text-sm font-medium divide-y divide-gray-100/50 dark:divide-gray-700/50">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Available Courses - Glass Card -->
+            <div
+                class="relative overflow-hidden rounded-2xl shadow-2xl p-6 border border-white/20 bg-white/60 dark:bg-gray-800/50 backdrop-blur-xl transition-all duration-300 hover:shadow-blue-500/10 hover:border-white/30">
+
+                <div class="flex flex-col xl:flex-row justify-between items-center mb-6 relative z-10 gap-4">
+                    <h3
+                        class="text-xl font-bold text-gray-800 dark:text-white flex items-center tracking-wide min-w-max">
+                        <span
+                            class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400">
+                            <i class="fa-solid fa-book-open mr-2 text-blue-500"></i> Course Catalog
+                        </span>
+                    </h3>
+
+                    <!-- Filters -->
+                    <div class="flex flex-wrap items-center gap-3 w-full xl:justify-end">
+                        <div class="relative">
+                            <select id="dept-filter"
+                                class="appearance-none bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-2.5 pl-4 pr-10 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 outline-none cursor-pointer hover:shadow-sm transition-all">
+                                <option value="All">All Depts</option>
+                                <option value="CS">Computer Science (CS)</option>
+                                <option value="SE">Software Eng (SE)</option>
+                                <option value="BA">Business Admin (BA)</option>
+                                <option value="AI">Artificial Intelligence (AI)</option>
+                                <option value="SCI">Sciences & Humanities (SCI)</option>
+                            </select>
+                            <i
+                                class="fa-solid fa-chevron-down absolute right-3 top-3.5 text-xs text-gray-400 pointer-events-none"></i>
+                        </div>
+
+                        <div class="relative">
+                            <select id="sem-filter"
+                                class="appearance-none bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-2.5 pl-4 pr-10 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 outline-none cursor-pointer hover:shadow-sm transition-all">
+                                <option value="All">All Semesters</option>
+                                <option value="1">Semester 1</option>
+                                <option value="2">Semester 2</option>
+                                <option value="3">Semester 3</option>
+                                <option value="4">Semester 4</option>
+                                <option value="5">Semester 5</option>
+                                <option value="6">Semester 6</option>
+                                <option value="7">Semester 7</option>
+                                <option value="8">Semester 8</option>
+                            </select>
+                            <i
+                                class="fa-solid fa-chevron-down absolute right-3 top-3.5 text-xs text-gray-400 pointer-events-none"></i>
+                        </div>
+
+                        <div class="relative w-full md:w-64 group">
+                            <i
+                                class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400 group-focus-within:text-indigo-500 transition-colors"></i>
+                            <input type="text" id="course-search" placeholder="Search..."
+                                class="w-full pl-11 pr-4 py-2.5 bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all dark:text-white placeholder-gray-400 dark:placeholder-gray-500 backdrop-blur-sm shadow-sm hover:shadow-md">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative overflow-x-auto rounded-xl">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr
+                                class="bg-blue-50/50 dark:bg-gray-700/30 text-gray-600 dark:text-gray-200 uppercase text-xs tracking-wider border-b border-gray-100 dark:border-gray-600">
+                                <th class="p-4 pl-6 font-semibold">Code</th>
+                                <th class="p-4 font-semibold">Course Title</th>
+                                <th class="p-4 font-semibold">Credits</th>
+                                <th class="p-4 font-semibold">Instructor</th>
+                                <th class="p-4 font-semibold text-right pr-6">Enroll</th>
+                            </tr>
+                        </thead>
+                        <tbody id="available-courses-list"
+                            class="text-sm font-medium divide-y divide-gray-100/50 dark:divide-gray-700/50">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/courses.js"></script>
+    <script>
+        // Simple GSAP entrance
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.to(".main-content", { duration: 0.8, opacity: 1 });
+            gsap.from(".tilt-card", { duration: 0.8, y: 30, opacity: 0, stagger: 0.2, ease: "power2.out" });
+        });
+    </script>
+</body>
+
+</html>

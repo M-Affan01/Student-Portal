@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable - Nexor University</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#667eea',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300 font-sans">
+    <div class="app-container flex min-h-screen">
+        <!-- Sidebar injected by layout.js -->
+
+        <div class="main-content w-full">
+            <!-- Header injected by layout.js -->
+
+            <div
+                class="bg-white dark:bg-gray-800 rounded-[2rem] shadow-2xl p-8 border border-gray-100 dark:border-gray-700 relative overflow-hidden">
+                <!-- Subtle Background Accent -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 blur-[80px] rounded-full"></div>
+
+                <h3 class="text-2xl font-black text-gray-900 dark:text-white mb-8 flex items-center tracking-tighter">
+                    <span class="bg-indigo-600 w-2 h-8 rounded-full mr-4"></span>
+                    Weekly Timetable
+                </h3>
+
+                <!-- Timetable Wrapper -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="timetable-container">
+                    <!-- Days will be generated here -->
+                    <div class="col-span-full flex flex-col items-center justify-center py-20 text-center">
+                        <div
+                            class="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-4">
+                        </div>
+                        <p class="text-gray-400 font-bold uppercase tracking-widest text-xs">Loading Schedule...</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/timetable.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Simplified entrance without fading
+            gsap.from(".main-content", { duration: 0.8, y: 10, ease: "power2.out" });
+
+            setTimeout(() => {
+                // Tilt init without extra animations
+                if (typeof VanillaTilt !== 'undefined') {
+                    VanillaTilt.init(document.querySelectorAll(".tilt-card"), { max: 5, speed: 400 });
+                }
+            }, 600);
+        });
+    </script>
+</body>
+
+</html>
