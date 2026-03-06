@@ -116,9 +116,6 @@ You can test the full functionality of the Elite Student Portal using the pre-se
 *   **Student 1:**
     *   **Roll Number:** `23SP-001-CS`
     *   **Password:** `password123`
-*   **Student 2:**
-    *   **Roll Number:** `23SP-002-CS`
-    *   **Password:** `password123`
 
 ### Workflow Example:
 1.  Navigate to the stunning 3D Login Page.
