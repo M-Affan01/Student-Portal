@@ -22,7 +22,7 @@ const getDashboardStats = async (req, res) => {
         const currentCgpa = parseFloat(cgpaResult[0].calculated_cgpa || 0).toFixed(2);
 
         // 2. Get Pending Fees
-        const [fees] = await db.query('SELECT SUM(amount) as pending_fees FROM fees WHERE student_id = ? AND status = "Pending"', [studentId]);
+        const [fees] = await db.query('SELECT SUM(amount) as pending_fees FROM fees WHERE student_id = ? AND status = \'Pending\'', [studentId]);
 
         // 3. Get Registered Courses Count & Current Semester Credits
         const [registrations] = await db.query(`
@@ -99,8 +99,8 @@ const getDashboardStats = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server Error' });
+        console.error('DASHBOARD ERROR:', error);
+        res.status(500).json({ message: 'Server Error', details: error.message, stack: error.stack });
     }
 };
 
@@ -174,12 +174,13 @@ const payFee = async (req, res) => {
 const getTimetable = async (req, res) => {
     try {
         const q = `
-            SELECT t.*, c.course_code, c.course_name, tc.teacher_name as instructor_name
+            SELECT t.*, c.course_code, c.course_name, ANY_VALUE(tc.teacher_name) as instructor_name
             FROM timetable t
             JOIN courses c ON t.course_id = c.course_id
             JOIN course_registrations r ON c.course_id = r.course_id
             LEFT JOIN teacher_courses tc ON c.course_id = tc.course_id AND tc.is_active = 1
             WHERE r.student_id = ? AND r.status = 'Registered'
+            GROUP BY t.timetable_id, c.course_code, c.course_name
             ORDER BY FIELD(t.day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'), t.start_time
         `;
         const [timetable] = await db.query(q, [req.user.id]);

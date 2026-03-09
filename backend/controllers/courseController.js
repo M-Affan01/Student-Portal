@@ -5,14 +5,12 @@ const db = require('../config/db');
 // @access  Private
 const getCourses = async (req, res) => {
     try {
-        // Optional: Filter by department or semester
-        // Join with teacher_courses to get the actual assigned instructor
         const q = `
             SELECT c.*, d.department_code, tc.teacher_name as current_instructor
             FROM courses c
             JOIN departments d ON c.department_id = d.department_id
             LEFT JOIN (
-                SELECT course_id, teacher_name 
+                SELECT course_id, ANY_VALUE(teacher_name) as teacher_name 
                 FROM teacher_courses 
                 WHERE is_active = 1
                 GROUP BY course_id
@@ -54,12 +52,13 @@ const registerCourse = async (req, res) => {
         }
 
         // 3. Check credits (Frontend already checks, but backend must too)
-        const [creditSum] = await connection.query('SELECT SUM(c.credit_hours) as total FROM course_registrations cr JOIN courses c ON cr.course_id = c.course_id WHERE cr.student_id = ? AND cr.status = "Registered"', [studentId]);
+        const [creditSum] = await connection.query('SELECT SUM(c.credit_hours) as total FROM course_registrations cr JOIN courses c ON cr.course_id = c.course_id WHERE cr.student_id = ? AND cr.status = \'Registered\'', [studentId]);
         const currentCredits = parseInt(creditSum[0].total || 0);
         if (currentCredits + courseData.credit_hours > 21) {
             await connection.rollback();
             return res.status(400).json({ message: 'Credit hour limit (21) exceeded' });
         }
+
 
         // 4. Get Student Info
         const [student] = await connection.query('SELECT full_name, roll_number FROM students WHERE student_id = ?', [studentId]);
@@ -92,8 +91,8 @@ const registerCourse = async (req, res) => {
 
     } catch (error) {
         if (connection) await connection.rollback();
-        console.error(error);
-        res.status(500).json({ message: 'Server Error' });
+        console.error('REG ERROR:', error);
+        res.status(500).json({ message: 'Server Error', details: error.message, stack: error.stack });
     } finally {
         if (connection) connection.release();
     }
@@ -132,16 +131,12 @@ const getMyCourses = async (req, res) => {
     try {
         const studentId = req.user.id;
         const [courses] = await db.query(`
-            SELECT c.*, r.status, tc.teacher_name as instructor_name
+            SELECT c.*, r.status, ANY_VALUE(tc.teacher_name) as instructor_name
             FROM course_registrations r
             JOIN courses c ON r.course_id = c.course_id
-            LEFT JOIN (
-                SELECT course_id, teacher_name 
-                FROM teacher_courses 
-                WHERE is_active = 1
-                GROUP BY course_id
-            ) tc ON c.course_id = tc.course_id
+            LEFT JOIN teacher_courses tc ON c.course_id = tc.course_id AND tc.is_active = 1
             WHERE r.student_id = ? AND r.status = 'Registered'
+            GROUP BY c.course_id, r.status
         `, [studentId]);
         res.json(courses);
     } catch (error) {

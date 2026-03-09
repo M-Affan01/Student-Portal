@@ -1,5 +1,7 @@
 let currentUser = null;
-const BASE_URL = 'http://localhost:5000'; // Define base for image paths
+const BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://your-backend-url.com'; // Define base for image paths
 
 async function loadProfile() {
     const token = localStorage.getItem('token');

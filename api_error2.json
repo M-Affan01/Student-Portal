@@ -1,0 +1,26 @@
+{
+  "cgpa": "3.67",
+  "credits": "9",
+  "totalEarnedCredits": 0,
+  "semester": 2,
+  "attendance": "80%",
+  "pendingFees": 0,
+  "registeredCourses": 3,
+  "notifications": [
+    {
+      "notification_id": 2,
+      "student_id": null,
+      "title": "Semester Registration Open",
+      "message": "Registration for the next semester is now open. Submit your course requests by March 31st.",
+      "type": "Academic",
+      "is_read": 0,
+      "created_at": "2026-03-05T20:24:16.000Z"
+    }
+  ],
+  "cgpaHistory": [
+    {
+      "semester": 1,
+      "gpa": "3.666667"
+    }
+  ]
+}
