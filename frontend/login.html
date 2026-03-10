@@ -188,7 +188,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
 
-    <script src="js/config.js"></script>
+    <script>
+        window.API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:5000/api'
+            : 'https://student-portal-55pl4eief-m-affan01s-projects.vercel.app/api';
+        window.BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:5000'
+            : 'https://student-portal-55pl4eief-m-affan01s-projects.vercel.app';
+        console.log("🚀 Global API Config Initialized");
+    </script>
     <script src="js/auth.js"></script>
 
     <script>
