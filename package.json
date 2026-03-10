@@ -1,6 +1,6 @@
 {
   "name": "nexor-university-portal",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Nexor University Student Portal",
   "main": "backend/server.js",
   "scripts": {
