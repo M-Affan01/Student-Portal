@@ -10,7 +10,8 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors()); // Simplest form for max compatibility
+app.use(cors());
+app.options('*', cors()); // Enable pre-flight across-the-board
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
