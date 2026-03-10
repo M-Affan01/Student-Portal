@@ -84,7 +84,8 @@ async function syncUserProfile() {
         const iconEl = document.getElementById('header-avatar-icon');
 
         if (imgEl && iconEl && user.profile_image) {
-            imgEl.src = `${LAYOUT_BASE_URL}/${user.profile_image}?t=${Date.now()}`;
+            const isBase64 = user.profile_image.startsWith('data:');
+            imgEl.src = isBase64 ? user.profile_image : `${LAYOUT_BASE_URL}/${user.profile_image}?t=${Date.now()}`;
             imgEl.classList.remove('hidden');
             iconEl.classList.add('hidden');
         }

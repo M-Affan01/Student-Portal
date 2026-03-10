@@ -1,7 +1,7 @@
 let currentUser = null;
-const BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+const BASE_URL = window.BASE_URL || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:5000'
-    : 'https://your-backend-url.com'; // Define base for image paths
+    : 'https://student-portal-alpha-seven.vercel.app');
 
 async function loadProfile() {
     const token = sessionStorage.getItem('token');
@@ -35,7 +35,8 @@ async function loadProfile() {
         const imgEl = document.getElementById('p-img');
         const iconEl = document.getElementById('p-icon');
         if (user.profile_image) {
-            imgEl.src = `${BASE_URL}/${user.profile_image}?t=${Date.now()}`;
+            const isBase64 = user.profile_image.startsWith('data:');
+            imgEl.src = isBase64 ? user.profile_image : `${BASE_URL}/${user.profile_image}?t=${Date.now()}`;
             imgEl.classList.remove('hidden');
             iconEl.classList.add('hidden');
         } else {
