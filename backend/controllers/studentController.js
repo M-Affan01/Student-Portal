@@ -205,12 +205,15 @@ const updateProfile = async (req, res) => {
 const uploadProfilePic = async (req, res) => {
     try {
         if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
-        const filePath = `uploads/profile_pics/${req.file.filename}`;
-        await db.query('UPDATE students SET profile_image = ? WHERE student_id = ?', [filePath, req.user.id]);
-        res.json({ message: 'Profile picture uploaded successfully', filePath });
+
+        // Convert buffer to base64 data URL (works on Vercel - no filesystem needed)
+        const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+
+        await db.query('UPDATE students SET profile_image = ? WHERE student_id = ?', [base64Image, req.user.id]);
+        res.json({ message: 'Profile picture uploaded successfully', filePath: base64Image });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server Error' });
+        console.error('UPLOAD ERROR:', error);
+        res.status(500).json({ message: 'Server Error', details: error.message });
     }
 }
 
