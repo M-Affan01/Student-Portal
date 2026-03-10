@@ -87,7 +87,7 @@
     </script>
     <script>
         // Redirect to login if not authenticated
-        if (!localStorage.getItem('token')) {
+        if (!sessionStorage.getItem('token')) {
             window.location.replace('login.html');
         }
     </script>

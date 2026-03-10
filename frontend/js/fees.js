@@ -1,6 +1,6 @@
 // Load Fees and Display Challan
 async function loadFees() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) return;
 
     try {
@@ -26,7 +26,7 @@ async function loadFees() {
         const totalCoursesEl = document.getElementById('total-courses');
         if (totalCoursesEl) totalCoursesEl.innerText = fees.length.toString();
 
-        const user = JSON.parse(localStorage.getItem('user')) || { name: 'Student', rollNumber: 'CS-XXXX-XXX' };
+        const user = JSON.parse(sessionStorage.getItem('user')) || { name: 'Student', rollNumber: 'CS-XXXX-XXX' };
 
         const nameEl = document.getElementById('challan-student-name');
         const rollEl = document.getElementById('challan-roll-no');
@@ -339,7 +339,7 @@ function initMasking() {
 // --- Document Generation ---
 
 function generateSingleReceipt(desc, amount, date, transId) {
-    const user = JSON.parse(localStorage.getItem('user')) || { name: 'Student' };
+    const user = JSON.parse(sessionStorage.getItem('user')) || { name: 'Student' };
     const win = window.open('', '', 'width=800,height=700');
     win.document.write(`
         <!DOCTYPE html>
@@ -388,7 +388,7 @@ function generateSingleReceipt(desc, amount, date, transId) {
 }
 
 function downloadChallanPDF() {
-    const user = JSON.parse(localStorage.getItem('user')) || { name: 'Student', rollNumber: 'CS-XXXX' };
+    const user = JSON.parse(sessionStorage.getItem('user')) || { name: 'Student', rollNumber: 'CS-XXXX' };
     const challanNo = 'CH-' + Math.floor(100000 + Math.random() * 900000);
     const date = new Date().toLocaleDateString();
 
@@ -465,4 +465,5 @@ document.addEventListener('DOMContentLoaded', () => {
     loadFees();
     initMasking();
 });
+
 

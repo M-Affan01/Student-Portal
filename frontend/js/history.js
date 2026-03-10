@@ -1,5 +1,5 @@
 async function loadHistory() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     try {
         const res = await fetch(`${API_URL}/student/history`, {
@@ -39,4 +39,5 @@ async function loadHistory() {
 }
 
 document.addEventListener('DOMContentLoaded', loadHistory);
+
 

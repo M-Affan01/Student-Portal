@@ -23,8 +23,8 @@ if (loginForm) {
 
             if (res.ok) {
                 // Save token
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('user', JSON.stringify(data));
+                sessionStorage.setItem('token', data.token);
+                sessionStorage.setItem('user', JSON.stringify(data));
 
                 Swal.fire({
                     icon: 'success',
@@ -54,17 +54,18 @@ if (loginForm) {
 }
 
 function logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
     window.location.href = 'login.html';
 }
 
 function checkAuth() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
         window.location.href = 'login.html';
         return null;
     }
     return token;
 }
+
 

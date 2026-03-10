@@ -1,5 +1,5 @@
 async function loadCourses() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     let registeredIds = new Set();
 
     // 1. Fetch Registered Courses
@@ -167,7 +167,7 @@ async function loadCourses() {
 }
 
 async function registerCourse(courseId) {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     try {
         const res = await fetch(`${API_URL}/courses/register`, {
             method: 'POST',
@@ -204,7 +204,7 @@ async function registerCourse(courseId) {
 }
 
 async function dropCourse(courseId) {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     const confirm = await Swal.fire({
         title: 'Are you sure?',
@@ -251,4 +251,5 @@ async function dropCourse(courseId) {
 }
 
 document.addEventListener('DOMContentLoaded', loadCourses);
+
 

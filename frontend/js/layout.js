@@ -55,7 +55,7 @@ const LAYOUT_BASE_URL = BASE_URL;
 
 
 async function syncUserProfile() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) return;
 
     try {
@@ -90,11 +90,11 @@ async function syncUserProfile() {
         }
 
         // Update LocalStorage to keep it fresh for next load
-        const lsUser = JSON.parse(localStorage.getItem('user')) || {};
+        const lsUser = JSON.parse(sessionStorage.getItem('user')) || {};
         lsUser.name = user.full_name;
         lsUser.email = user.email;
         // lsUser.rollNumber = user.roll_number; // if needed
-        localStorage.setItem('user', JSON.stringify(lsUser));
+        sessionStorage.setItem('user', JSON.stringify(lsUser));
 
     } catch (e) { console.error("Profile sync error:", e); }
 }
@@ -109,7 +109,7 @@ async function loadLayout() {
 
     // Inject Header
     // Initially use localStorage as placeholder/optimistic UI
-    const localUser = JSON.parse(localStorage.getItem('user'));
+    const localUser = JSON.parse(sessionStorage.getItem('user'));
     const initialName = localUser ? localUser.name : 'Student';
 
     const mainContent = document.querySelector('.main-content');
@@ -185,4 +185,5 @@ document.addEventListener('DOMContentLoaded', () => {
     checkAuth();
     loadLayout();
 });
+
 

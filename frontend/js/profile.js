@@ -4,7 +4,7 @@ const BASE_URL = window.location.hostname === 'localhost' || window.location.hos
     : 'https://your-backend-url.com'; // Define base for image paths
 
 async function loadProfile() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
         window.location.href = 'login.html';
         return;
@@ -67,7 +67,7 @@ fileInput.addEventListener('change', async (e) => {
     const formData = new FormData();
     formData.append('profilePic', file);
 
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     Swal.fire({
         title: 'Uploading...',
@@ -126,7 +126,7 @@ document.getElementById('edit-profile-btn').addEventListener('click', async () =
     });
 
     if (formValues) {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         try {
             const res = await fetch(`${API_URL}/student/profile`, {
                 method: 'PUT',
@@ -173,7 +173,7 @@ document.getElementById('change-password-btn').addEventListener('click', async (
     });
 
     if (formValues) {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         try {
             const res = await fetch(`${API_URL}/student/change-password`, {
                 method: 'PUT',
@@ -194,4 +194,5 @@ document.getElementById('change-password-btn').addEventListener('click', async (
 });
 
 document.addEventListener('DOMContentLoaded', loadProfile);
+
 

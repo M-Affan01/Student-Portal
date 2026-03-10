@@ -24,7 +24,7 @@ function animateFloat(id, start, end, duration) {
 }
 
 async function loadDashboard() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     // GSAP Entrance
     gsap.to(".main-content", { duration: 1, opacity: 1, ease: "power2.inOut" });
@@ -209,4 +209,5 @@ function renderChart(currentCgpa, history = []) {
 }
 
 document.addEventListener('DOMContentLoaded', loadDashboard);
+
 
