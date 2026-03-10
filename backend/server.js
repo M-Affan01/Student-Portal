@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express'); // Deployment Trigger: Vercel Protection Disabled
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
@@ -27,9 +27,13 @@ app.get('/', (req, res) => {
     res.send('Nexor University API is running...');
 });
 
-// Health check route
+// Health check routes
 app.get('/api/health', (req, res) => {
-    res.status(200).json({ status: 'OK', timestamp: new Date() });
+    res.status(200).json({ status: 'OK', message: 'API is healthy', timestamp: new Date() });
+});
+
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'OK', message: 'API is healthy (root)', timestamp: new Date() });
 });
 
 // Favicon route to prevent 404
