@@ -1,9 +1,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const db = require('./config/db');
-
 const path = require('path');
+// const db = require('./config/db'); // Moved down
 
 dotenv.config();
 
@@ -29,7 +28,8 @@ app.get('/', (req, res) => {
     res.send('Nexor University API is running...');
 });
 
-// Import Routes
+// Import DB and Routes later to ensure CORS middleware is already active
+const db = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const courseRoutes = require('./routes/courseRoutes');
