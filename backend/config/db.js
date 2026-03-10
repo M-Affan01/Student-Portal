@@ -3,12 +3,12 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const poolConfig = process.env.DATABASE_URL || {
+const poolConfig = {
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'nexor_university',
-    port: process.env.DB_PORT || 3306,
+    database: process.env.DB_NAME || 'defaultdb',
+    port: process.env.DB_PORT || 10436,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -17,18 +17,17 @@ const poolConfig = process.env.DATABASE_URL || {
     }
 };
 
-// Add SSL if CA is defined (For Aiven/Cloud DB)
+// Handle SSL CA for Aiven/Vercel
 if (process.env.DB_CA_PATH) {
     try {
         const fs = require('fs');
         const path = require('path');
-        const caPath = path.resolve(process.env.DB_CA_PATH);
-        poolConfig.ssl = {
-            ca: fs.readFileSync(caPath)
-        };
-        console.log('📡 Database: SSL Enabled');
+        // Vercel project root is process.cwd()
+        const caPath = path.join(process.cwd(), 'ca.pem');
+        poolConfig.ssl.ca = fs.readFileSync(caPath);
+        console.log('📡 Database: SSL CA loaded successfully from root');
     } catch (err) {
-        console.error('❌ Database SSL Error:', err.message);
+        console.error('❌ Database SSL Error (Critical for Aiven):', err.message);
     }
 }
 
