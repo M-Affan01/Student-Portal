@@ -22,10 +22,29 @@ if (process.env.DB_CA_PATH) {
     try {
         const fs = require('fs');
         const path = require('path');
-        // Vercel project root is process.cwd()
-        const caPath = path.join(process.cwd(), 'ca.pem');
-        poolConfig.ssl.ca = fs.readFileSync(caPath);
-        console.log('📡 Database: SSL CA loaded successfully from root');
+
+        // Search in multiple locations to be safe on Vercel
+        const possiblePaths = [
+            path.join(process.cwd(), 'ca.pem'),               // Root
+            path.join(__dirname, '../../ca.pem'),             // Root from config/
+            path.join(__dirname, '../ca.pem'),                // Root from config/ (Alternative)
+            process.env.DB_CA_PATH                            // Path from .env
+        ];
+
+        let caData = null;
+        for (const p of possiblePaths) {
+            if (fs.existsSync(p)) {
+                caData = fs.readFileSync(p);
+                console.log(`📡 Database: SSL CA loaded successfully from ${p}`);
+                break;
+            }
+        }
+
+        if (caData) {
+            poolConfig.ssl.ca = caData;
+        } else {
+            console.warn('⚠️ Database: SSL CA path provided but file not found in common locations.');
+        }
     } catch (err) {
         console.error('❌ Database SSL Error (Critical for Aiven):', err.message);
     }
