@@ -8,8 +8,19 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = [
+    'https://nexor-portal.vercel.app',
+    'https://student-portal-75nn.vercel.app'
+];
+
 app.use(cors({
-    origin: 'https://student-portal-75nn.vercel.app',
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'X-CSRF-Token']

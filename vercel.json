@@ -22,7 +22,7 @@
                 },
                 {
                     "key": "Access-Control-Allow-Origin",
-                    "value": "https://student-portal-75nn.vercel.app"
+                    "value": "https://nexor-portal.vercel.app"
                 },
                 {
                     "key": "Access-Control-Allow-Methods",
