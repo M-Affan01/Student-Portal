@@ -39,3 +39,4 @@ async function loadHistory() {
 }
 
 document.addEventListener('DOMContentLoaded', loadHistory);
+

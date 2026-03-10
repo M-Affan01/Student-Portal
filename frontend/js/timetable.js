@@ -109,3 +109,4 @@ async function loadTimetable() {
 }
 
 document.addEventListener('DOMContentLoaded', loadTimetable);
+

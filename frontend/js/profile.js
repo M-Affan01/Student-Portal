@@ -194,3 +194,4 @@ document.getElementById('change-password-btn').addEventListener('click', async (
 });
 
 document.addEventListener('DOMContentLoaded', loadProfile);
+

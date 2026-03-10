@@ -209,3 +209,4 @@ function renderChart(currentCgpa, history = []) {
 }
 
 document.addEventListener('DOMContentLoaded', loadDashboard);
+

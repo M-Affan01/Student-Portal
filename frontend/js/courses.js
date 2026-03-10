@@ -251,3 +251,4 @@ async function dropCourse(courseId) {
 }
 
 document.addEventListener('DOMContentLoaded', loadCourses);
+

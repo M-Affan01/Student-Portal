@@ -67,3 +67,4 @@ function checkAuth() {
     }
     return token;
 }
+
