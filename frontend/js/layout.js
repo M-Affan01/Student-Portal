@@ -49,12 +49,10 @@ const HEADER_HTML = (userName) => `
     </div>
 `;
 
-const LAYOUT_API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:5000/api'
-    : 'https://your-backend-url.com/api';
-const LAYOUT_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:5000'
-    : 'https://your-backend-url.com';
+// LAYOUT_API_URL and LAYOUT_BASE_URL are provided by config.js
+const LAYOUT_API_URL = API_URL;
+const LAYOUT_BASE_URL = BASE_URL;
+
 
 async function syncUserProfile() {
     const token = localStorage.getItem('token');

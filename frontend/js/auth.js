@@ -1,6 +1,5 @@
-const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-    ? 'http://localhost:5000/api' 
-    : 'https://your-backend-url.com/api';
+// API_URL is provided by config.js
+
 
 const loginForm = document.getElementById('loginForm');
 
