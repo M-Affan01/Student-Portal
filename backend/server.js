@@ -9,9 +9,18 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.options('*', cors()); // Enable pre-flight across-the-board
+// Explicit CORS Middleware for Vercel Preflight Stability
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    // Handle Preflight
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+    next();
+});
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
