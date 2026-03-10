@@ -9,12 +9,16 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: 'https://student-portal-75nn.vercel.app',
+    origin: (origin, callback) => {
+        // Reflect origin back to the client to support credentials with wildcard-like behavior
+        callback(null, true);
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
 
-// Handle preflight for all routes
+// Handle preflight for all routes explicitly
 app.options('*', cors());
 
 app.use(express.json());
