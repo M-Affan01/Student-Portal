@@ -34,6 +34,9 @@ app.get('/api/health', (req, res) => {
     res.status(200).json({ status: 'OK', timestamp: new Date() });
 });
 
+// Favicon route to prevent 404
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 // Import DB and Routes later to ensure CORS middleware is already active
 const db = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
