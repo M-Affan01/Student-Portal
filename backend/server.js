@@ -24,7 +24,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Basic Route
 app.get('/', (req, res) => {
-    res.send('Nexor University API is running...');
+    res.send('Nexor University API is running... [v1.0.final]');
 });
 
 // Health check routes
